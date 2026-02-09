@@ -1,0 +1,709 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --deep-blue: #0a1128;
+    --dark-blue: #1e2749;
+    --neon-blue: #00d4ff;
+    --soft-cyan: #7dd3fc;
+    --light-blue: #93c5fd;
+    --glow-color: rgba(0, 212, 255, 0.6);
+    --gradient-1: linear-gradient(135deg, #0a1128 0%, #1e2749 50%, #2d3561 100%);
+    --gradient-2: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.15), transparent 70%);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--gradient-1);
+    color: #ffffff;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* ===== CANVAS PARTICLES ===== */
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ===== BLUR OVERLAY ===== */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 17, 40, 0.3);
+    backdrop-filter: blur(0px);
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.blur-overlay.active {
+    opacity: 1;
+    backdrop-filter: blur(10px);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ===== SCENES ===== */
+.scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    filter: blur(10px);
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 1s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    filter: blur(0px);
+}
+
+.content {
+    text-align: center;
+    max-width: 90%;
+    position: relative;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.title {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    color: var(--soft-cyan);
+    text-shadow: 0 0 20px var(--glow-color),
+                 0 0 40px var(--glow-color);
+}
+
+.subtitle {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    color: var(--light-blue);
+    margin: 15px 0;
+}
+
+/* ===== SPARKLES ===== */
+.sparkle-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+}
+
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--glow-color);
+    animation: sparkleFloat 3s ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+}
+
+@keyframes sparkleFloat {
+    0%, 100% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(calc(var(--delay) * 100px - 50px), -80px) scale(1);
+    }
+}
+
+/* ===== RIPPLE EFFECT ===== */
+.ripple-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    animation: ripple 2s ease-out infinite;
+}
+
+@keyframes ripple {
+    0% {
+        width: 100px;
+        height: 100px;
+        opacity: 1;
+    }
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fade-in-delay {
+    opacity: 0;
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+}
+
+.fade-in-delay-2 {
+    opacity: 0;
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 1.6s forwards;
+}
+
+/* ===== SCENE 3: ABOUT YOU ===== */
+.about-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    opacity: 0;
+    position: relative;
+}
+
+.about-text {
+    font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+    font-weight: 300;
+    color: var(--soft-cyan);
+    letter-spacing: 0.02em;
+    margin: 0 15px;
+}
+
+.glow-line {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+    box-shadow: 0 0 10px var(--neon-blue);
+    border-radius: 2px;
+}
+
+.twinkle {
+    width: 6px;
+    height: 6px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--glow-color);
+    animation: twinkle 1.5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.fade-in-sequence {
+    animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.6s;
+}
+
+.delay-2 {
+    animation-delay: 1.2s;
+}
+
+.delay-3 {
+    animation-delay: 1.8s;
+}
+
+.delay-4 {
+    animation-delay: 2.4s;
+}
+
+/* ===== SCENE 4: HEARTBEAT ===== */
+.heartbeat-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.heart-symbol {
+    font-size: clamp(3rem, 15vw, 8rem);
+    color: var(--neon-blue);
+    text-shadow: 0 0 30px var(--glow-color),
+                 0 0 60px var(--glow-color);
+    animation: heartbeat 1.5s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.2);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.2);
+    }
+    56% {
+        transform: scale(1);
+    }
+}
+
+.heart-rings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    animation: expandRing 2s ease-out infinite;
+}
+
+.ring:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.ring:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.ring:nth-child(3) {
+    animation-delay: 1.2s;
+}
+
+@keyframes expandRing {
+    0% {
+        width: 50px;
+        height: 50px;
+        opacity: 1;
+    }
+    100% {
+        width: 250px;
+        height: 250px;
+        opacity: 0;
+    }
+}
+
+/* ===== SCENE 5: FINAL QUESTION ===== */
+.final-content {
+    position: relative;
+}
+
+.final-question {
+    font-size: clamp(1.8rem, 6vw, 4rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--soft-cyan);
+    text-shadow: 0 0 30px var(--glow-color),
+                 0 0 60px var(--glow-color);
+    animation: fadeIn 2s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+               gentleGlow 3s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 50px;
+}
+
+@keyframes gentleGlow {
+    0%, 100% {
+        text-shadow: 0 0 30px var(--glow-color),
+                     0 0 60px var(--glow-color);
+    }
+    50% {
+        text-shadow: 0 0 40px var(--glow-color),
+                     0 0 80px var(--glow-color),
+                     0 0 100px var(--glow-color);
+    }
+}
+
+.glow-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--glow-color), transparent 70%);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ===== BUTTONS ===== */
+.buttons-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    position: relative;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 2.5s forwards;
+}
+
+.btn {
+    position: relative;
+    padding: 15px 40px;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-weight: 500;
+    border: 2px solid var(--neon-blue);
+    border-radius: 50px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--soft-cyan);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--glow-color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-yes:hover .btn-glow,
+.btn-yes:active .btn-glow {
+    opacity: 0.5;
+}
+
+.btn-yes {
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+.btn-yes:hover,
+.btn-yes:active {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--glow-color),
+                0 0 50px var(--glow-color);
+    background: rgba(0, 212, 255, 0.2);
+}
+
+.btn-no {
+    border-color: rgba(125, 211, 252, 0.5);
+    background: rgba(30, 39, 73, 0.3);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== FLOATING HEARTS ===== */
+.hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    bottom: -50px;
+    left: calc(20% + var(--delay) * 10%);
+    width: 20px;
+    height: 20px;
+    opacity: 0.4;
+    animation: floatUp var(--duration) ease-in infinite;
+    animation-delay: var(--delay);
+}
+
+.floating-heart::before {
+    content: '♥';
+    font-size: 20px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* ===== SUCCESS SCENE ===== */
+.success-content {
+    text-align: center;
+}
+
+.success-title {
+    font-size: clamp(2rem, 7vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--soft-cyan);
+    text-shadow: 0 0 40px var(--glow-color),
+                 0 0 80px var(--glow-color);
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+               successGlow 2s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+
+.success-subtitle {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 300;
+    color: var(--light-blue);
+    opacity: 0;
+    animation: fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+}
+
+@keyframes successGlow {
+    0%, 100% {
+        text-shadow: 0 0 40px var(--glow-color),
+                     0 0 80px var(--glow-color);
+    }
+    50% {
+        text-shadow: 0 0 60px var(--glow-color),
+                     0 0 120px var(--glow-color),
+                     0 0 150px var(--glow-color);
+    }
+}
+
+.mega-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--glow-color), transparent 70%);
+    border-radius: 50%;
+    animation: megaPulse 2s ease-in-out infinite;
+}
+
+@keyframes megaPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.celebration-hearts {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+}
+
+.celebration-heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    animation: celebrationBurst 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--angle) / 360deg * 0.5s);
+}
+
+.celebration-heart::before {
+    content: '♥';
+    font-size: 30px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px var(--glow-color);
+}
+
+@keyframes celebrationBurst {
+    0% {
+        transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-200px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* ===== CONTINUE HINT ===== */
+.continue-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeIn 2s cubic-bezier(0.4, 0, 0.2, 1) 2s forwards;
+}
+
+.continue-hint span {
+    font-size: 0.9rem;
+    color: var(--light-blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.pulse-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--glow-color);
+    animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+
+/* ===== RESPONSIVE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .about-line {
+        margin: 15px 0;
+    }
+    
+    .glow-line {
+        width: 30px;
+    }
+    
+    .continue-hint {
+        bottom: 30px;
+    }
+    
+    .buttons-container {
+        gap: 15px;
+    }
+    
+    .btn {
+        padding: 12px 30px;
+    }
+}
+
+@media (max-height: 600px) {
+    .about-line {
+        margin: 10px 0;
+    }
+    
+    .continue-hint {
+        bottom: 20px;
+    }
+    
+    .final-question {
+        margin-bottom: 30px;
+    }
+}
+
+/* ===== TOUCH OPTIMIZATION ===== */
+@media (hover: none) and (pointer: coarse) {
+    .scene {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+}

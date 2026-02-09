@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Valentine Surprise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Particle Canvas Background -->
+    <canvas id="particles"></canvas>
+    
+    <!-- Blur Overlay for transitions -->
+    <div class="blur-overlay"></div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Scene 1: Countdown -->
+        <section class="scene active" id="scene1">
+            <div class="content">
+                <h1 class="title fade-in">5 days left until Valentine's Day...</h1>
+                <div class="sparkle-container">
+                    <div class="sparkle" style="--delay: 0s;"></div>
+                    <div class="sparkle" style="--delay: 0.5s;"></div>
+                    <div class="sparkle" style="--delay: 1s;"></div>
+                </div>
+            </div>
+            <div class="continue-hint">
+                <span>Tap anywhere to continue</span>
+                <div class="pulse-dot"></div>
+            </div>
+        </section>
+
+        <!-- Scene 2: Introduction -->
+        <section class="scene" id="scene2">
+            <div class="content">
+                <p class="subtitle fade-in-delay">I wanted to tell you these</p>
+                <p class="subtitle fade-in-delay-2">before that day arrives...</p>
+                <div class="ripple-effect"></div>
+            </div>
+            <div class="continue-hint">
+                <span>Tap to continue</span>
+                <div class="pulse-dot"></div>
+            </div>
+        </section>
+
+        <!-- Scene 3: About You -->
+        <section class="scene" id="scene3">
+            <div class="content">
+                <div class="about-line fade-in-sequence">
+                    <div class="glow-line"></div>
+                    <p class="about-text">About your smile...</p>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="about-line fade-in-sequence delay-1">
+                    <div class="glow-line"></div>
+                    <p class="about-text">About your hair...</p>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="about-line fade-in-sequence delay-2">
+                    <div class="glow-line"></div>
+                    <p class="about-text">And about how incredibly</p>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="about-line fade-in-sequence delay-3">
+                    <div class="glow-line"></div>
+                    <p class="about-text">precious and lovable</p>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="about-line fade-in-sequence delay-4">
+                    <div class="glow-line"></div>
+                    <p class="about-text">you are...</p>
+                    <div class="twinkle"></div>
+                </div>
+            </div>
+            <div class="continue-hint">
+                <span>Tap to continue</span>
+                <div class="pulse-dot"></div>
+            </div>
+        </section>
+
+        <!-- Scene 4: Build-up -->
+        <section class="scene" id="scene4">
+            <div class="content">
+                <div class="heartbeat-container">
+                    <div class="heart-symbol">♥</div>
+                    <div class="heart-rings">
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 5: Final Question -->
+        <section class="scene" id="scene5">
+            <div class="content final-content">
+                <div class="hearts-container">
+                    <div class="floating-heart" style="--delay: 0s; --duration: 4s;"></div>
+                    <div class="floating-heart" style="--delay: 0.5s; --duration: 5s;"></div>
+                    <div class="floating-heart" style="--delay: 1s; --duration: 4.5s;"></div>
+                    <div class="floating-heart" style="--delay: 1.5s; --duration: 5.5s;"></div>
+                    <div class="floating-heart" style="--delay: 2s; --duration: 4s;"></div>
+                    <div class="floating-heart" style="--delay: 2.5s; --duration: 4.8s;"></div>
+                    <div class="floating-heart" style="--delay: 3s; --duration: 5.2s;"></div>
+                </div>
+                <h1 class="final-question">Will you be my Valentine?</h1>
+                <div class="glow-pulse"></div>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-yes" id="yesBtn">
+                        <span class="btn-text">Yes! ♥</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="btn btn-no" id="noBtn">
+                        <span class="btn-text">No</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Scene -->
+        <section class="scene" id="sceneSuccess">
+            <div class="content success-content">
+                <div class="celebration-hearts">
+                    <div class="celebration-heart" style="--angle: 0deg;"></div>
+                    <div class="celebration-heart" style="--angle: 45deg;"></div>
+                    <div class="celebration-heart" style="--angle: 90deg;"></div>
+                    <div class="celebration-heart" style="--angle: 135deg;"></div>
+                    <div class="celebration-heart" style="--angle: 180deg;"></div>
+                    <div class="celebration-heart" style="--angle: 225deg;"></div>
+                    <div class="celebration-heart" style="--angle: 270deg;"></div>
+                    <div class="celebration-heart" style="--angle: 315deg;"></div>
+                </div>
+                <h1 class="success-title">I knew you would say yes! ♥</h1>
+                <p class="success-subtitle">You've made me the happiest person</p>
+                <div class="mega-glow"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
